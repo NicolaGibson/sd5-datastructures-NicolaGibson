@@ -1,6 +1,6 @@
-Data Structures & Algorithms
+## Data Structures & Algorithms
 
-PART I: Empirical Analysis of Search Algorithms (30%)
+##PART I: Empirical Analysis of Search Algorithms (30%)
 Assignment Description:
 You are required to design and implement search algorithms to solve a problem, time-test
 the implementations of your algorithms with a range of inputs and then analyse the efficiency
@@ -29,7 +29,7 @@ Hand in:
 commented code listing (10 marks)
 3. Report including graphs and reflection (15 marks)
 
-PART I: Empirical Analysis of Search Algorithms (25%)
+##PART I: Empirical Analysis of Search Algorithms (25%)
 Assignment Description:
 You are required to design and implement search algorithms to solve a problem, time-test the implementations of your algorithms with a range of inputs and then analyse the efficiency of each algorithm in order to determine the time complexity of each algorithm.
 Detailed Specifications:
