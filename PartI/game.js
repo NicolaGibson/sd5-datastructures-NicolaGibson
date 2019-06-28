@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 function getNanoTime() {
   let nanotime = process.hrtime();
   return nanotime[0] * 1000000000 + nanotime[1];
@@ -54,19 +56,38 @@ function binarySearch(secretNumber, max) {
 let targetNumber = randomNumber(1000);
 
 function timeValues() {
-  let timeArray = [1000, 5000, 10000, 50000, 100000, 500000, 1000000];
-  const binaryMap = timeArray.map(time => checkBinaryTime(time));
-  const linearMap = timeArray.map(time => checkLinearTime(time));
+  let timeArray = [
+    5000,
+    10000,
+    50000,
+    100000,
+    500000,
+    750000,
+    1000000,
+    1500000,
+    2000000,
+    5000000,
+    7000000,
+    1000000000,
+    5000000000
+  ];
+  const resultsMap = timeArray.map(sizeOfRange => ({
+    sizeOfRange,
+    binaryTime: checkBinaryTime(sizeOfRange),
+    sizeOfRange,
+    linearTime: checkLinearTime(sizeOfRange)
+  }));
+  return resultsMap;
 }
 
 console.log(linearSearch(targetNumber, 999));
 console.log(binarySearch(randomNumber(1000) + 1, 1000));
-/*console.log(checkBinaryTime(1000));
-console.log(checkBinaryTime(50000));
-console.log(checkBinaryTime(10000));
-console.log(checkLinearTime(1000));
-console.log(checkLinearTime(50000));
-console.log(checkLinearTime(10000)); */
+console.log(timeValues());
 
-console.log(checkLinearTime(timeValues));
-console.log(checkBinaryTime(timeValues));
+const resultsReturned = timeValues().map(
+  row => `${row.sizeOfRange},${row.binaryTime},${row.linearTime} \n`
+);
+
+console.log(resultsReturned);
+
+fs.writeFileSync("./searchResults.csv", resultsReturned.join(""));
