@@ -5,29 +5,6 @@ function getNanoTime() {
   return nanotime[0] * 1000000000 + nanotime[1];
 }
 
-function checkBinaryTime(sizeOfRange, timeValues) {
-  let startTime = getNanoTime();
-  let targetNumber = randomNumber(1000);
-  binarySearch(targetNumber, sizeOfRange);
-  const endTime = getNanoTime();
-  const overallTime = endTime - startTime;
-  return overallTime;
-}
-
-function checkLinearTime(sizeOfRange, timeValues) {
-  let startTime = getNanoTime();
-  let targetNumber = randomNumber(1000);
-  linearSearch(targetNumber, sizeOfRange);
-  const endTime = getNanoTime();
-  const overallTime = endTime - startTime;
-  return overallTime;
-}
-
-function randomNumber(x) {
-  let number = Math.floor(Math.random() * x);
-  return number;
-}
-
 function linearSearch(targetNumber, n) {
   for (let i = 1; i <= n; i++) {
     if (i === targetNumber) {
@@ -53,41 +30,55 @@ function binarySearch(secretNumber, max) {
   return "Your target value cannot be found";
 }
 
-let targetNumber = randomNumber(1000);
+let increment = 1000;
+let max = 5000000;
 
-function timeValues() {
-  let timeArray = [
-    5000,
-    10000,
-    50000,
-    100000,
-    500000,
-    750000,
-    1000000,
-    1500000,
-    2000000,
-    5000000,
-    7000000,
-    1000000000,
-    5000000000
-  ];
-  const resultsMap = timeArray.map(sizeOfRange => ({
-    sizeOfRange,
-    binaryTime: checkBinaryTime(sizeOfRange),
-    sizeOfRange,
-    linearTime: checkLinearTime(sizeOfRange)
-  }));
-  return resultsMap;
+const buildArraySizes = (max, increment) => {
+  let arr = [];
+  for (let i = increment; i < max + increment; i += increment) {
+    arr.push(i);
+  }
+  return arr;
+};
+
+const myData = buildArraySizes(max, increment);
+
+function timeValues(arr) {
+  var result = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    let secret = Math.floor(Math.random() * arr[i]);
+
+    let startLinear = getNanoTime();
+    linearSearch(secret, arr[i]);
+    let endLinear = getNanoTime();
+    let totalLinear = endLinear - startLinear;
+
+    let startBinary = getNanoTime();
+    binarySearch(secret, arr[i]);
+    let endBinary = getNanoTime();
+    let totalBinary = endBinary - startBinary;
+
+    console.log("hit");
+    console.log(totalBinary);
+    console.log(totalLinear);
+
+    let tempArray = [];
+    tempArray.push(totalLinear, totalBinary);
+    tempArray.unshift(arr[i]);
+
+    result.push(toCSV(tempArray));
+  }
+  result.unshift("");
+  return result;
 }
 
-console.log(linearSearch(targetNumber, 999));
-console.log(binarySearch(randomNumber(1000) + 1, 1000));
-console.log(timeValues());
+console.log(timeValues(myData));
 
-const resultsReturned = timeValues().map(
-  row => `${row.sizeOfRange},${row.binaryTime},${row.linearTime} \n`
-);
+function toCSV(array) {
+  return array.join(",") + "\n";
+}
 
-console.log(resultsReturned);
+const csvData = toCSV(timeValues(myData));
 
-fs.writeFileSync("./searchResults.csv", resultsReturned.join(""));
+fs.writeFileSync("Result.csv", csvData);
