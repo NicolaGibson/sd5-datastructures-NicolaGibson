@@ -1,27 +1,30 @@
 const fs = require("fs");
 
+// Function which converts time to nanotime
 function getNanoTime() {
   let nanotime = process.hrtime();
   return nanotime[0] * 1000000000 + nanotime[1];
 }
 
+//Linear search function, increments by one moving through the range until it finds the mystery number.
 function linearSearch(targetNumber, n) {
   for (let i = 1; i <= n; i++) {
     if (i === targetNumber) {
-      return "The random number is " + i + "!";
+      return "The mystery number is " + i + "!";
     }
   }
 }
 
-function binarySearch(secretNumber, max) {
+//binary search function sets three points mid, low, high to aid search when midpoint is equal to target number target number is returned.
+function binarySearch(targetNumber, max) {
   let mid,
     low = 1,
     high = max;
   while (low <= high) {
     mid = Math.floor((low + high) / 2);
-    if (mid === secretNumber) {
-      return "The random number is " + mid + "!";
-    } else if (mid < secretNumber) {
+    if (mid === targettNumber) {
+      return "The mystery number is " + mid + "!";
+    } else if (mid < targetNumber) {
       low = mid + 1;
     } else {
       high = mid - 1;
@@ -33,6 +36,7 @@ function binarySearch(secretNumber, max) {
 let increment = 1000;
 let max = 5000000;
 
+// Generating array of values for linear and binary search to search through.
 const buildArraySizes = (max, increment) => {
   let arr = [];
   for (let i = increment; i < max + increment; i += increment) {
@@ -43,6 +47,7 @@ const buildArraySizes = (max, increment) => {
 
 const myData = buildArraySizes(max, increment);
 
+//
 function timeValues(arr) {
   var result = [];
 
@@ -58,8 +63,6 @@ function timeValues(arr) {
     binarySearch(secret, arr[i]);
     let endBinary = getNanoTime();
     let totalBinary = endBinary - startBinary;
-
-    console.log("hit");
     console.log(totalBinary);
     console.log(totalLinear);
 
@@ -75,6 +78,7 @@ function timeValues(arr) {
 
 console.log(timeValues(myData));
 
+//Creating csv file, specifying comma seperated values and values on new line.
 function toCSV(array) {
   return array.join(",") + "\n";
 }
