@@ -22,7 +22,7 @@ function binarySearch(targetNumber, max) {
     high = max;
   while (low <= high) {
     mid = Math.floor((low + high) / 2);
-    if (mid === targettNumber) {
+    if (mid === targetNumber) {
       return "The mystery number is " + mid + "!";
     } else if (mid < targetNumber) {
       low = mid + 1;
@@ -47,7 +47,8 @@ const buildArraySizes = (max, increment) => {
 
 const myData = buildArraySizes(max, increment);
 
-//
+//Calculates the time taken for the linear and binary search functions to find the mystery number and pushes the result to the CSV generating function.
+
 function timeValues(arr) {
   var result = [];
 
