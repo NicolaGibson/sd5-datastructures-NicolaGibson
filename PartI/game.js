@@ -6,9 +6,10 @@ function getNanoTime() {
   return nanotime[0] * 1000000000 + nanotime[1];
 }
 
-//Linear search function, increments by one moving through the range until it finds the mystery number.
-function linearSearch(targetNumber, n) {
-  for (let i = 1; i <= n; i++) {
+//Linear search function, increments by one moving through the values in range until it finds the mystery number.
+function linearSearch(targetNumber, values) {
+  console.log(values);
+  for (let i = 1; i < values.length; i++) {
     if (i === targetNumber) {
       return "The mystery number is " + i + "!";
     }
@@ -52,11 +53,13 @@ const myData = buildArraySizes(max, increment);
 function timeValues(arr) {
   var result = [];
 
-  for (let i = 0; i < arr.length; i++) {
-    let secret = Math.floor(Math.random() * arr[i]);
+  for (let i = 0; i <= arr.length; i++) {
+    console.log("i " + i);
+    console.log("arr.length " + arr.length);
+    let secret = Math.floor(Math.random() * arr);
 
     let startLinear = getNanoTime();
-    linearSearch(secret, arr[i]);
+    linearSearch(secret, arr);
     let endLinear = getNanoTime();
     let totalLinear = endLinear - startLinear;
 
@@ -64,8 +67,8 @@ function timeValues(arr) {
     binarySearch(secret, arr[i]);
     let endBinary = getNanoTime();
     let totalBinary = endBinary - startBinary;
-    console.log(totalBinary);
-    console.log(totalLinear);
+    console.log("totalBinary " + totalBinary);
+    console.log("totalLinear " + totalLinear);
 
     let tempArray = [];
     tempArray.push(totalLinear, totalBinary);
@@ -77,7 +80,7 @@ function timeValues(arr) {
   return result;
 }
 
-console.log(timeValues(myData));
+//console.log("timeValues(myData) " + timeValues(myData));
 
 //Creating csv file, specifying comma seperated values and values on new line.
 function toCSV(array) {
