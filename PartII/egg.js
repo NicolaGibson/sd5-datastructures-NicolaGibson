@@ -1,43 +1,48 @@
-/*
-W(numberOfEggs,numberOfFloors) = 1 + min{max(W(numberOfEggs − 1, x − 1), W(numberOfEggs,numberOfFloors − x)): x = 1, 2, ..., numberOfFloors }
-
-with W(numberOfEggs,0) = 0 for all numberOfEggs > 0 and W(1,numberOfFloors) = numberOfFloors for all numberOfFloors.
-*/
-
-function f(numberOfEggs, numberOfFloors) {
-  if (numberOfFloors == 0 && numberOfEggs > 0) return 0;
-
-  if (numberOfEggs == 1) return numberOfFloors;
-
-  let best = Infinity;
-
-  for (let x = 1; x <= numberOfFloors; x++)
-    best = Math.min(
-      best,
-      Math.max(f(numberOfEggs - 1, x - 1), f(numberOfEggs, numberOfFloors - x))
-    );
-
-  return 1 + best;
-}
-
-function findFloor(eggs, floors) {
-  if (eggs === 1 || floors === 0 || floors === 1) {
+function getNumDropsRecursive(eggs, floors) {
+  if (eggs == 1 || floors == 0 || floors == 1) {
     return floors;
   }
 
-  var minDrops = Math.ceil((-1 + Math.sqrt(1 + 8 * floors)) / 2);
-  return Math.min(minDrops, findFloor(eggs - 1, minDrops));
+  let minimum = Infinity;
+  for (let floor = 1; floor <= floors; floor++) {
+    minimum = Math.min(
+      minimum,
+      1 +
+        Math.max(
+          getNumDropsRecursive(eggs - 1, floor - 1),
+          getNumDropsRecursive(eggs, floors - floor)
+        )
+    );
+  }
+
+  return minimum;
 }
 
-for (let i = 1; i < 10; i++) {
-  for (let j = 1; j < 10; j++) {
-    let a = f(i, j);
-    let b = findFloor(i, j);
+//Function returns the number of drops you need in the worst case to find the floor.
 
-    if (a != b) {
-      console.log(
-        `numberOfEggs,numberOfFloors: ${i},${j}; f: ${a}; findFloors: ${b}`
-      );
+function getNumDropsDP(eggs, floors) {
+  const numdrops = [
+    null,
+    [...Array(floors + 1).keys()],
+    ...Array.from(Array(eggs - 1), _ => [0, 1])
+  ];
+  for (let remainingEggs = 2; remainingEggs <= eggs; remainingEggs++) {
+    for (let choices = 2; choices <= floors; choices++) {
+      let minimum = Infinity;
+      for (let dropAt = 1; dropAt <= choices; dropAt++) {
+        minimum = Math.min(
+          minimum,
+          1 +
+            Math.max(
+              numdrops[remainingEggs - 1][dropAt - 1],
+              numdrops[remainingEggs][choices - dropAt]
+            )
+        );
+      }
+      numdrops[remainingEggs][choices] = minimum;
     }
   }
+  return numdrops[eggs][floors];
 }
+console.log(getNumDropsRecursive(3, 100));
+console.log(getNumDropsDP(3, 100));

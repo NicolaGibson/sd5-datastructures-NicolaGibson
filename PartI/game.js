@@ -40,7 +40,7 @@ let max = 5000000;
 // Generating array of values for linear and binary search to search through.
 const buildArraySizes = (max, increment) => {
   let arr = [];
-  for (let i = increment; i < max + increment; i += increment) {
+  for (let i = increment; i <= max + increment; i += increment) {
     arr.push(i);
   }
   return arr;
@@ -54,8 +54,8 @@ function timeValues(arr) {
   var result = [];
 
   for (let i = 0; i <= arr.length; i++) {
-    console.log("i " + i);
-    console.log("arr.length " + arr.length);
+    // console.log("i " + i);
+    //console.log("arr.length " + arr.length);
     let secret = Math.floor(Math.random() * arr);
 
     let startLinear = getNanoTime();
